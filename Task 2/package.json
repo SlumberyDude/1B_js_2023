@@ -1,0 +1,15 @@
+{
+  "name": "task-2",
+  "version": "1.0.0",
+  "description": "Написать модуль, который способен выполнять операции с числами любой длины.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "private": true,
+  "type": "module"
+}
