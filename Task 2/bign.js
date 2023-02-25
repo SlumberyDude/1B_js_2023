@@ -17,34 +17,61 @@ function cutString(str) {
     return res;
 }
 
-function sumBig(a, b) {
-    // check for negative numbers
-    let sign = '';
-    if (a[0] == '-' && b[0] == '-') {
-        return '-' + sumBig(a.slice(1), b.slice(1));
+/**
+ * check if a >= b as number. a and b are positive
+ * @param {string} a 
+ * @param {string} b 
+ */
+function ge(a, b) {
+    if (a.length > b.length) return true;
+    if (a.length < b.length) return false;
+
+    let aParts = cutString(a);
+    let bParts = cutString(b);
+    for (let i = aParts.length - 1; i >= 0; i--) {
+        if (aParts[i] > bParts[i]) return true;
+        if (aParts[i] < bParts[i]) return false;
     }
-    if (a[0] == '-') return sumBig(b, a);
-    if (b[0] == '-') {
-        b = b.slice(1);
+    return true;
+}
+
+/**
+ * if sub = true a
+ * @param {string} a 
+ * @param {string} b 
+ * @param {boolean} sub 
+ * @returns 
+ */
+function sumSubBig(a, b, sub = false) {
+    let sign = '';
+    if (sub) {
         sign = '-';
+        if ( !ge(a,b) ) return '-' + sumSubBig(b, a, true);
     }
 
-    let aPieces = cutString(a);
-    let bPieces = cutString(b);
+    let aPieces = cutString(a).map( piece => +piece );
+    let bPieces = cutString(b).map( piece => +(sign + piece) );
+    // console.log(aPieces);
+    // console.log(bPieces);
     let resarr = [];
     let overflow = 0;
     let ai = 0;
     let bi = 0;
     while (ai < aPieces.length && bi < bPieces.length) {
-        let aNum = +aPieces[ai++];
-        let bNum = +( sign + bPieces[bi++] );
+        let aNum = aPieces[ai++];
+        let bNum = bPieces[bi++];
+        // console.log(`anum = ${aNum} bNum = ${bNum}`);
         let sum = aNum + bNum + overflow;
         // console.log(`sum = ${sum}`)
         if (sum < 0) {
-            sum = -sum;
+            sum = sum + 10**CUTSIZE;
+            overflow = -1;
+        } else {
+            overflow = Math.floor(sum / 10**CUTSIZE);
+            sum = sum % 10**CUTSIZE;
         }
-        overflow = Math.floor(sum / 10**CUTSIZE);
-        sum = sum % 10**CUTSIZE;
+        // overflow = Math.floor(sum / 10**CUTSIZE);
+        // sum = sum % 10**CUTSIZE;
         let zeroesNeed = CUTSIZE - ('' + sum).length;
         sum = '0'.repeat(zeroesNeed) + sum;
         // console.log(`sum = ${sum}`)
@@ -63,13 +90,31 @@ function sumBig(a, b) {
     } 
 
     while (resti < rest.length) {
-        let sum = +rest[resti++] + overflow;
-        resarr.push(sum % 10**CUTSIZE);
-        overflow = Math.floor(sum / 10**CUTSIZE);
+        // console.log(`rest = ${rest[resti]} over = ${overflow}`);
+        let sum = rest[resti++] + overflow;
+        if (sum < 0) {
+            sum = sum + 10**CUTSIZE;
+            overflow = -1;
+        } else {
+            overflow = Math.floor(sum / 10**CUTSIZE);
+            sum = sum % 10**CUTSIZE;
+        }
+        resarr.push(sum);
+        // console.log(`sum = ${sum} resarr = ${resarr}`)
     }
     if (overflow) resarr.push(overflow);
 
+    // let zeroPiece = '0'.repeat(CUTSIZE);
+    for (let i = resarr.length - 1; i >= 0; i--) {
+        if (resarr.length === 1) break;
+        if (+resarr[i] === 0) {
+            resarr.pop();
+        } else {
+            break;
+        }
+    }
     resarr[resarr.length - 1] = +resarr[resarr.length - 1]; // erase beginning zeroes
+
 
     let result = resarr.reduceRight( (res, num) => {
         return res + num;
@@ -78,14 +123,12 @@ function sumBig(a, b) {
     return result
 }
 
-function subtrBig(a, b) {
-    return '';
-}
-
 const operations = {
-    '+': sumBig,
+    '+': (a, b) => {
+        return sumSubBig(a, b);
+    },
     '-': (a, b) => {
-        return sumBig(a, -b);
+        return sumSubBig(a, b, true);
     }
 }
 
