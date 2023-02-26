@@ -4,14 +4,22 @@ function Result({number, success, message}) {
     this.message = message;
 }
 
-const CUTSIZE = 1;
+const CUTSIZE = 3;
+const MULTCUTSIZE_MAX = 7;
 
-function cutString(str) {
+/**
+ * Разрезает строку на чанки начиная с конца.
+ * Возвращает массив строк
+ * @param {string} str 
+ * @param {number} cutsize 
+ * @returns {Array}
+ */
+function cutString(str, cutsize) {
     let res = [];
     let begin = str.length;
     while (begin) {
         let end = begin;
-        begin = (begin > CUTSIZE) ? begin - CUTSIZE : 0;
+        begin = (begin > cutsize) ? begin - cutsize : 0;
         res.push( str.slice(begin, end) );
     }
     return res;
@@ -26,95 +34,63 @@ function ge(a, b) {
     if (a.length > b.length) return true;
     if (a.length < b.length) return false;
 
-    let aParts = cutString(a);
-    let bParts = cutString(b);
+    let aParts = cutString(a, 14);
+    let bParts = cutString(b, 14);
     for (let i = aParts.length - 1; i >= 0; i--) {
-        if (aParts[i] > bParts[i]) return true;
-        if (aParts[i] < bParts[i]) return false;
+        if (+aParts[i] > +bParts[i]) return true;
+        if (+aParts[i] < +bParts[i]) return false;
     }
     return true;
 }
 
+const SUMCUTSIZE = 14;
+
 /**
- * if sub = true a
+ * a and b >= 0
  * @param {string} a 
  * @param {string} b 
  * @param {boolean} sub 
  * @returns 
  */
-function sumSubBig(a, b, sub = false) {
-    let sign = '';
-    if (sub) {
-        sign = '-';
-        if ( !ge(a,b) ) return '-' + sumSubBig(b, a, true);
-    }
-
-    let aPieces = cutString(a).map( piece => +piece );
-    let bPieces = cutString(b).map( piece => +(sign + piece) );
+function sumBig(a, b) {
+    let aChunks = cutString(a, SUMCUTSIZE).map( x => +x );
+    let bChunks = cutString(b, SUMCUTSIZE).map( x => +x );
     // console.log(aPieces);
     // console.log(bPieces);
     let resarr = [];
     let overflow = 0;
-    let ai = 0;
-    let bi = 0;
-    while (ai < aPieces.length && bi < bPieces.length) {
-        let aNum = aPieces[ai++];
-        let bNum = bPieces[bi++];
-        // console.log(`anum = ${aNum} bNum = ${bNum}`);
+    let i = 0;
+    while (i < aChunks.length && i < bChunks.length) {
+        let aNum = aChunks[i];
+        let bNum = bChunks[i];
         let sum = aNum + bNum + overflow;
-        // console.log(`sum = ${sum}`)
-        if (sum < 0) {
-            sum = sum + 10**CUTSIZE;
-            overflow = -1;
-        } else {
-            overflow = Math.floor(sum / 10**CUTSIZE);
-            sum = sum % 10**CUTSIZE;
-        }
-        // overflow = Math.floor(sum / 10**CUTSIZE);
-        // sum = sum % 10**CUTSIZE;
-        let zeroesNeed = CUTSIZE - ('' + sum).length;
+
+        overflow = Math.floor(sum / 10**SUMCUTSIZE);
+        sum = sum % 10**SUMCUTSIZE;
+
+        let zeroesNeed = SUMCUTSIZE - ('' + sum).length;
         sum = '0'.repeat(zeroesNeed) + sum;
-        // console.log(`sum = ${sum}`)
+
         resarr.push(sum);
+        i++;
     }
 
     let rest = [];
-    let resti = 0;
-    if (ai < aPieces.length) {
-        rest = aPieces;
-        resti = ai;
-    }
-    if (bi < bPieces.length) {
-        rest = bPieces;
-        resti = bi;
-    } 
+    if (i < aChunks.length) rest = aChunks;
+    if (i < bChunks.length) rest = bChunks;
 
-    while (resti < rest.length) {
-        // console.log(`rest = ${rest[resti]} over = ${overflow}`);
-        let sum = rest[resti++] + overflow;
-        if (sum < 0) {
-            sum = sum + 10**CUTSIZE;
-            overflow = -1;
-        } else {
-            overflow = Math.floor(sum / 10**CUTSIZE);
-            sum = sum % 10**CUTSIZE;
-        }
+    while (i < rest.length) {
+        let sum = rest[i] + overflow;
+
+        overflow = Math.floor(sum / 10**SUMCUTSIZE);
+        sum = sum % 10**SUMCUTSIZE;
+
         resarr.push(sum);
-        // console.log(`sum = ${sum} resarr = ${resarr}`)
+        i++;
     }
     if (overflow) resarr.push(overflow);
 
-    // let zeroPiece = '0'.repeat(CUTSIZE);
-    for (let i = resarr.length - 1; i >= 0; i--) {
-        if (resarr.length === 1) break;
-        if (+resarr[i] === 0) {
-            resarr.pop();
-        } else {
-            break;
-        }
-    }
     resarr[resarr.length - 1] = +resarr[resarr.length - 1]; // erase beginning zeroes
-
 
     let result = resarr.reduceRight( (res, num) => {
         return res + num;
@@ -123,12 +99,145 @@ function sumSubBig(a, b, sub = false) {
     return result
 }
 
+function eraseLeadingZeroes(chunksArray) {
+    for (let i = chunksArray.length - 1; i >= 0; i--) {
+        if (chunksArray.length === 1) break;
+        if (+chunksArray[i] === 0) {
+            chunksArray.pop();
+        } else {
+            break;
+        }
+    }
+    chunksArray[chunksArray.length - 1] = 
+        +chunksArray[chunksArray.length - 1];
+}
+
+
+/**
+ * a >= b
+ * @param {string} a 
+ * @param {string} b 
+ * @param {boolean} sub 
+ * @returns 
+ */
+function subBig(a, b) {
+    let aChunks = cutString(a, SUMCUTSIZE).map( x => +x );
+    let bChunks = cutString(b, SUMCUTSIZE).map( x => +x );
+    // console.log(aPieces);
+    // console.log(bPieces);
+    let resarr = [];
+    let debt = 0;
+    let i = 0;
+    while (i < aChunks.length && i < bChunks.length) {
+        let aNum = aChunks[i];
+        let bNum = bChunks[i];
+        let sub = aNum - bNum - debt;
+        if (sub < 0) {
+            sub = 10**SUMCUTSIZE + sub;
+            debt = 1;
+        }
+
+        let zeroesNeed = SUMCUTSIZE - ('' + sub).length;
+        sub = '0'.repeat(zeroesNeed) + sub;
+        resarr.push(sub);
+        i++;
+    }
+
+    while (i < aChunks.length) {
+        let sub = aChunks[i] - debt;
+        if (sub < 0) {
+            sub = 10**SUMCUTSIZE + sub;
+            debt = 1;
+        }
+        let zeroesNeed = SUMCUTSIZE - ('' + sub).length;
+        sub = '0'.repeat(zeroesNeed) + sub;
+        resarr.push(sub);
+        i++;
+    }
+
+    eraseLeadingZeroes(resarr);
+
+    let result = resarr.reduceRight( (res, num) => {
+        return res + num;
+    }, '');
+
+    return result
+}
+
+/**
+ * Сегмент - часть числа. Любое целое число представимо в виде суммы сегментов.
+ */
+export class Segment {
+    constructor(num, pos = 0) {
+        this.num = num;
+        this.pos = pos;
+    }
+    toString = function() {
+        return '' + this.num + '0'.repeat(this.pos);
+    }
+    mul(segment) {
+        return new Segment(this.num * segment.num, this.pos + segment.pos);
+    }
+}
+
+function multChunksArrays(aChunks, bChunks) {
+    // console.log(`mult chunks ${aChunks} and ${bChunks}`);
+    let result = [];
+
+    for (let ai = 0; ai < aChunks.length; ai++) {
+        for (let bi = 0; bi < bChunks.length; bi++) {
+            let segA = new Segment(aChunks[ai], MULTCUTSIZE * ai);
+            let segB = new Segment(bChunks[bi], MULTCUTSIZE * bi);
+            let segMul = segA.mul(segB);
+            // console.log(`mult two segments: ${segA} and ${segB}. Result = ${segMul}`);
+            result.push(segMul.toString());
+        }
+    }
+    return result;
+}
+
+
+const MULTCUTSIZE = 3;
+/**
+ * Multiply two big POSITIVE numbers
+ * @param {string} a 
+ * @param {string} b 
+ * @returns 
+ */
+function multBig(a, b) {
+    // console.log(`multiply ${a} and ${b}`)
+    let aChunks = cutString(a, MULTCUTSIZE).map( x => +x );
+    let bChunks = cutString(b, MULTCUTSIZE).map( x => +x );
+
+    let bignums = multChunksArrays(aChunks, bChunks);
+    
+    let result = bignums.reduce( (total, num) => {
+        return sumBig(total, num);
+    }, '0');
+
+    return result;
+}
+
+// function multBig(a, b) {
+//     let aPieces = cutString(a).map( piece => +piece );
+//     let bPieces = cutString(b).map( piece => +piece );
+//     while (b) {
+
+//     }
+// }
+
 const operations = {
     '+': (a, b) => {
-        return sumSubBig(a, b);
+        return sumBig(a, b);
     },
     '-': (a, b) => {
-        return sumSubBig(a, b, true);
+        if ( ge(a, b) ) {
+            return subBig(a, b)
+        }
+        return '-' + subBig(b, a);
+    },
+    '*': (a, b) => {
+        return multBig(a, b);
     }
 }
 
