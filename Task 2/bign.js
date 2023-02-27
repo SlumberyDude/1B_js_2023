@@ -9,7 +9,7 @@ const MULTCUTSIZE_MAX = 7;
 
 /**
  * Разрезает строку на чанки начиная с конца.
- * Возвращает массив строк
+ * Возвращает массив строк.
  * @param {string} str 
  * @param {number} cutsize 
  * @returns {Array}
