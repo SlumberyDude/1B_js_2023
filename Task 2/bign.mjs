@@ -167,7 +167,7 @@ function subBig(a, b) {
 /**
  * Сегмент - часть числа. Любое целое число представимо в виде суммы сегментов.
  */
-export class Segment {
+class Segment {
     constructor(num, pos = 0) {
         this.num = num;
         this.pos = pos;

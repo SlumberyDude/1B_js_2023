@@ -1,4 +1,4 @@
-import {capFirst, fixSpaces, countWords, countUniqueWords} from './strops.js';
+import {capFirst, fixSpaces, countWords, countUniqueWords} from './strops.mjs';
 
 let strToCap = 'поЛоЖеНиЕ ЭТО прОДОЛЖалось Уже тРЕТИй деНЬ.';
 console.log(capFirst(strToCap));
