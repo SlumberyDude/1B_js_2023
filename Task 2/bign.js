@@ -218,13 +218,50 @@ function multBig(a, b) {
     return result;
 }
 
-// function multBig(a, b) {
-//     let aPieces = cutString(a).map( piece => +piece );
-//     let bPieces = cutString(b).map( piece => +piece );
-//     while (b) {
+/**
+ * Метод только если remain и b - сравнимые большие числа, то есть
+ * результатом деления является целое число от 1 до 9.
+ * @param {string} remain 
+ * @param {string} b 
+ */
+function divSimple(remain, b) {
+    let cycle = 0;
+    while ( ge(remain, b) ) {
+        remain = subBig(remain, b);
+        cycle += 1;
+    }
+    return [cycle, remain]; // remain < b && remain >= 0
+}
 
-//     }
-// }
+/**
+ * Результат деления в виде целого числа округленного в меньшую сторону
+ * @param {string} a 
+ * @param {string} b 
+ */
+function divBig(a, b) {
+    if ( !ge(a, b) ) return 0;
+
+    let result = '';
+    let remain = '';
+    let pos = 0;
+
+    while(pos < a.length) {
+        remain += a[pos];
+        // console.log(`remain extend ${remain}`);
+        if ( ge(remain, b) ) {
+            // console.log(`remain ${remain} >= b ${b}`);
+            let res;
+            [res, remain] = divSimple(remain, b);
+            // console.log(`simple res ${res}  remain ${remain}`);
+            result += res;
+        } else {
+            if (result.length) result += '0';
+        }
+        pos++;
+    }
+
+    return result;
+}
 
 const operations = {
     '+': (a, b) => {
@@ -238,6 +275,9 @@ const operations = {
     },
     '*': (a, b) => {
         return multBig(a, b);
+    },
+    '/': (a, b) => {
+        return divBig(a, b);
     }
 }
 

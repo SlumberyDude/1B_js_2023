@@ -39,9 +39,13 @@ console.log('вычитание');
 console.log(execute('123 - 9999999999999999876'));
 console.log(123 - 9999999999999999876);
 console.log(BigInt('123') - BigInt('9999999999999999876'));
+console.log('---');
+console.log(execute('923 - 1999999999999999876'));
+console.log(923 - 1999999999999999876);
+console.log(BigInt('923') - BigInt('1999999999999999876'));
 console.log('---')
 console.log(execute('9999999999999999999 - 9999999999999999876'));
-console.log(9999999999999999999- 9999999999999999876);
+console.log(9999999999999999999 - 9999999999999999876);
 console.log(BigInt('9999999999999999999') - BigInt('9999999999999999876'));
 
 // *
@@ -52,6 +56,25 @@ console.log(BigInt(999999999999) * BigInt(9999999999999));
 console.log(execute('99999999 * 99999999'));
 console.log(99999999 * 99999999);
 console.log(BigInt(99999999) * BigInt(99999999));
+
+// /
+console.log('Целочисленное деление')
+console.log(execute('123 / 11'));
+console.log(123 / 11);
+console.log(BigInt('123') / BigInt('11'));
+console.log('---')
+console.log(execute('123 / 7693'));
+console.log(123 / 7693);
+console.log(BigInt('123') / BigInt('7693'));
+console.log('---')
+console.log(execute('9999999987654321 / 1234567890'));
+console.log(9999999987654321 / 1234567890);
+console.log(BigInt('9999999987654321') / BigInt('1234567890'));
+console.log('---')
+console.log(execute('9999999987654321999 / 648456789087657992'));
+console.log(9999999987654321999 / 648456789087657992);
+console.log(BigInt('9999999987654321999') / BigInt('648456789087657992'));
+
 
 
 
