@@ -265,18 +265,54 @@ function divBig(a, b) {
 
 const operations = {
     '+': (a, b) => {
+        if (a[0] === '-' && b[0] === '-') {
+            return '-' + sumBig(a.slice(1), b.slice(1));
+        }
+        if (a[0] === '-') {
+            return operations['-'](b, a.slice(1));
+        }
+        if (b[0] === '-') {
+            return operations['-'](a, b.slice(1));
+        }
         return sumBig(a, b);
     },
     '-': (a, b) => {
+        if (a[0] === '-' && b[0] === '-') {
+            return operations['-'](b.slice(1), a.slice(1));
+        }
+        if (a[0] === '-') {
+            return '-' + sumBig(a.slice(1), b);
+        }
+        if (b[0] === '-') {
+            return sumBig(a, b.slice(1));
+        }
         if ( ge(a, b) ) {
             return subBig(a, b)
         }
         return '-' + subBig(b, a);
     },
     '*': (a, b) => {
+        if (a[0] === '-' && b[0] === '-') {
+            return multBig(a.slice(1), b.slice(1));
+        }
+        if (a[0] === '-') {
+            return '-' + multBig(a.slice(1), b);
+        }
+        if (b[0] === '-') {
+            return '-' + multBig(a, b.slice(1));
+        }
         return multBig(a, b);
     },
     '/': (a, b) => {
+        if (a[0] === '-' && b[0] === '-') {
+            return divBig(a.slice(1), b.slice(1));
+        }
+        if (a[0] === '-') {
+            return '-' + divBig(a.slice(1), b);
+        }
+        if (b[0] === '-') {
+            return '-' + divBig(a, b.slice(1));
+        }
         return divBig(a, b);
     }
 }
