@@ -4,8 +4,8 @@ function Result({number, success, message}) {
     this.message = message;
 }
 
-const CUTSIZE = 3;
-const MULTCUTSIZE_MAX = 7;
+const MULTCUTSIZE = 7;
+const SUMCUTSIZE = 14;
 
 /**
  * Разрезает строку на чанки начиная с конца.
@@ -42,8 +42,6 @@ function ge(a, b) {
     }
     return true;
 }
-
-const SUMCUTSIZE = 14;
 
 /**
  * a and b >= 0
@@ -196,8 +194,6 @@ function multChunksArrays(aChunks, bChunks) {
     return result;
 }
 
-
-const MULTCUTSIZE = 3;
 /**
  * Multiply two big POSITIVE numbers
  * @param {string} a 
