@@ -4,7 +4,6 @@ module.exports = (baseUrl) => (req, res) => {
 
     // query params parsing
     const params = {}
-    console.log(parsedUrl);
     parsedUrl.searchParams.forEach( (val, key) => params[key] = val );
 
     req.pathname = parsedUrl.pathname;
@@ -13,7 +12,6 @@ module.exports = (baseUrl) => (req, res) => {
     let pnChunks = req.pathname.split('/');
     
     if (isFinite(pnChunks[pnChunks.length - 1])) {
-        console.log('last chunk is finite');
         params['id'] = +pnChunks[pnChunks.length - 1];
         pnChunks[pnChunks.length - 1] = ':id';
         req.pathname = pnChunks.join('/');

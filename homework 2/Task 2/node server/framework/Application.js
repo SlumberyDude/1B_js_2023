@@ -14,7 +14,6 @@ module.exports = class Application {
 
     addRouter(router, prefix = '') {
         Object.keys(router.endpoints).forEach( path => {
-            this.prefix = prefix;
             const prefixedPath = (prefix) ? prefix + path : path;
             const endpoint = router.endpoints[path];
             Object.keys(endpoint).forEach( method => {
@@ -32,13 +31,9 @@ module.exports = class Application {
 
     _createServer() {
         return http.createServer( (req, res) => {
-            req.prefix = this.prefix;
             this.middlewares.forEach( middleware => middleware(req, res) );
 
             req.on('endBodyParse', () => {
-                console.log(`params: ${JSON.stringify(req.params)}`);
-                console.log(`pathname: ${req.pathname}`);
-                console.log(`method: ${req.method}`);
                 const emitted = this.emitter.emit(this._getRouteMask(req.pathname, req.method), req, res);
                 if (!emitted) {
                     res.end();
