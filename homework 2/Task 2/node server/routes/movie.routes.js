@@ -1,7 +1,6 @@
 const Router = require('../framework/Router');
-const Controller = require('../controller/controller')
+const movieController = require('../controller/movie.controller');
 
-const movieController = new Controller('movie');
 const router = new Router();
 
 router.post('/movie', movieController.create);

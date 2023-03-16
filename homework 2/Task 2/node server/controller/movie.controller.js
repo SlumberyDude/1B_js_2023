@@ -1,3 +1,4 @@
+
 const db = require('../db');
 
 function Controller(tableName) {
@@ -19,13 +20,26 @@ function Controller(tableName) {
     }
     
     this.getAll = async function(req, res) {
-        const entities = await db.query(`SELECT * from ${tableName}`);
+        const qs = `SELECT movie.movie_id, movie_name, STRING_AGG(genre_name, ', ') as genres
+                    FROM ${tableName}
+                    LEFT JOIN genre
+                    ON movie.movie_id = genre.movie_id
+                    GROUP BY movie.movie_id;`
+
+        const entities = await db.query(qs);
         res.send(entities.rows);
     }
     
     this.getBy = (id_name) => async function(req, res) {
         const id = req.params['id'];
-        const entities = await db.query(`SELECT * from ${tableName} WHERE ${id_name} = $1`, [id]);
+        const qs = `SELECT movie.movie_id, movie_name, STRING_AGG(genre_name, ', ') as genres
+                    FROM ${tableName}
+                    LEFT JOIN genre
+                    ON movie.movie_id = genre.movie_id
+                    WHERE movie.${id_name} = $1
+                    GROUP BY movie.movie_id;`
+        
+        const entities = await db.query(qs, [id]);
         res.send(entities.rows[0]);
     }
     
@@ -64,4 +78,4 @@ function Controller(tableName) {
     }
 }
 
-module.exports = Controller;
+module.exports = new Controller('movie');
