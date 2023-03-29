@@ -4,6 +4,7 @@ import { ValidationPipe } from 'src/pipes/validation.pipe';
 import { CreateUserDto } from 'src/users/dto/create.user.dto';
 import { AuthService } from './auth.service';
 
+@UsePipes(ValidationPipe)
 @ApiTags('Авторизация')
 @Controller('auth')
 export class AuthController {

@@ -8,14 +8,17 @@ import { ValidationException } from "src/exceptions/validation.exception";
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
     async transform(value: any, metadata: ArgumentMetadata): Promise<any> {
-        // console.log(`got value ${JSON.stringify(value)} in transform`);
+        console.log(`got value ${JSON.stringify(value)} in transform`);
 
-        if (value === undefined) return value; // 
+        if (value === undefined) {
+            return value;
+            throw new ValidationException('Получено неопределенное значение в качестве аргумента')
+        }
 
         const obj = plainToClass(metadata.metatype, value); // Получаем объект, который будем валидировать
-        // console.log(`Получили объект ${obj}`);
+        console.log(`Получили объект ${obj}`);
         const errors = await validate(obj);
-        // console.log(`Получили ошибки для него ${errors}`);
+        console.log(`Получили ошибки для него ${errors}`);
 
         if (errors.length) {
             console.log("Ошибки")

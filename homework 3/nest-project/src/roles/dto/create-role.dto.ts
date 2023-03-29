@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsInt, IsString, Max } from "class-validator";
+import { IsInt, IsString } from "class-validator";
 
 export class CreateRoleDto {
     
@@ -7,7 +7,7 @@ export class CreateRoleDto {
     @IsString({message: 'Должно быть строкой'})
     readonly name: string;
 
-    @ApiProperty({ example: '1', description: 'Сила роли выраженная в числовом значении' })
+    @ApiProperty({ example: '1', description: 'Уровень доступа роли' })
     @IsInt({message: 'Должно быть целым числом'})
     readonly value: number;
 

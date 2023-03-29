@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Post, UseGuards, UsePipes } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Roles } from 'src/auth/roles-auth.decorator';
+import { MinRoleValueGuard } from 'src/auth/min-roles.guard';
+// import { Roles } from 'src/auth/roles-auth.decorator';
+import { MinRoleValue } from 'src/auth/roles-auth.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { ValidationPipe } from 'src/pipes/validation.pipe';
 import { AddRoleDto } from './dto/add-role.dto';
@@ -9,6 +11,7 @@ import { CreateUserDto } from './dto/create.user.dto';
 import { User } from './users.model';
 import { UsersService } from './users.service';
 
+@UsePipes(ValidationPipe)
 @ApiTags('Пользователи')
 @Controller('users')
 export class UsersController {
@@ -24,8 +27,8 @@ export class UsersController {
 
     @ApiOperation({ summary: 'Получение всех пользователей' })
     @ApiResponse({ status: 200, type: [User] })
-    @Roles('ADMIN') // Используем созданный декоратор, чтобы установить, какая роль необходима для данного эндпоинта
-    @UseGuards(RolesGuard) // Заменяем JwtAuthGuard на RolesGuard, он уже включает проверку авторизации но также и проверку роли
+    @MinRoleValue(10) // Минимально необходимая роль (с минимальным уровнем прав доступа) 10 - ADMIN по умолчанию
+    @UseGuards(MinRoleValueGuard)
     @Get()
     getAll() {
         return this.usersService.getAllUsers();
@@ -33,8 +36,8 @@ export class UsersController {
 
     @ApiOperation({ summary: 'Выдача роли пользователю' })
     @ApiResponse({ status: 200 })
-    @Roles('ADMIN') // Используем созданный декоратор, чтобы установить, какая роль необходима для данного эндпоинта
-    @UseGuards(RolesGuard) // Заменяем JwtAuthGuard на RolesGuard, он уже включает проверку авторизации но также и проверку роли
+    @MinRoleValue(10)
+    @UseGuards(MinRoleValueGuard)
     @Post('/role')
     addRole(@Body() roleDto: AddRoleDto) {
         return this.usersService.addRole(roleDto);
@@ -42,8 +45,8 @@ export class UsersController {
 
     @ApiOperation({ summary: 'Бан пользователя' })
     @ApiResponse({ status: 200 })
-    @Roles('ADMIN') // Используем созданный декоратор, чтобы установить, какая роль необходима для данного эндпоинта
-    @UseGuards(RolesGuard) // Заменяем JwtAuthGuard на RolesGuard, он уже включает проверку авторизации но также и проверку роли
+    @MinRoleValue(10)
+    @UseGuards(MinRoleValueGuard)
     @Post('/ban')
     banUser(@Body() banUserDto: BanUserDto) {
         return this.usersService.banUser(banUserDto);
@@ -51,8 +54,8 @@ export class UsersController {
 
     @ApiOperation({ summary: 'Разбан пользователя' })
     @ApiResponse({ status: 200 })
-    @Roles('ADMIN') // Используем созданный декоратор, чтобы установить, какая роль необходима для данного эндпоинта
-    @UseGuards(RolesGuard) // Заменяем JwtAuthGuard на RolesGuard, он уже включает проверку авторизации но также и проверку роли
+    @MinRoleValue(10)
+    @UseGuards(MinRoleValueGuard)
     @Post('/unban')
     unbanUser(@Body() unbanUserDto: UnbanUserDto) {
         return this.usersService.unbanUser(unbanUserDto);

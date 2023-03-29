@@ -17,7 +17,7 @@ async function start() {
     SwaggerModule.setup('/api/docs', app, document);
     
     // app.useGlobalGuards(JwtAuthGuard) // установит гвард для всего приложения
-    app.useGlobalPipes(new ValidationPipe());
+    // app.useGlobalPipes(new ValidationPipe());
 
     await app.listen(PORT, () => { console.log(`Сервер запущен на ${PORT} порту.`)});
 }
