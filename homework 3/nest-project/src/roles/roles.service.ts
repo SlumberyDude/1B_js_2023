@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { User } from 'src/users/users.model';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { DeleteRoleDto } from './dto/delete-role.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './roles.model';
 
 @Injectable()
@@ -39,7 +40,23 @@ export class RolesService {
                 throw new HttpException('Недостаточно прав', HttpStatus.FORBIDDEN);
             }
             role.destroy();
+            return;
         }
+        throw new HttpException('Роли с таким именем не существует', HttpStatus.NOT_FOUND);
+    }
+
+    async updateByName(name: string, dto: UpdateRoleDto, userPerm: number) {
+        console.log(`update role with name ${name}`)
+        const role = await this.roleRepository.findOne({where: {name: name}});
+        console.log(`find role ${JSON.stringify(role)}`)
+        if (role) {
+            if (userPerm <= role.value) {
+                throw new HttpException('Недостаточно прав', HttpStatus.FORBIDDEN);
+            }
+            role.update(dto);
+            return role;
+        }
+        throw new HttpException('Роли с таким именем не существует', HttpStatus.NOT_FOUND);
     }
 
 }

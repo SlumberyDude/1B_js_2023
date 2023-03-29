@@ -42,7 +42,7 @@ export class MinRoleValueGuard implements CanActivate {
             }
             
             const user = this.jwtService.verify<User>(token);
-            req.user = user; // Сохраняем объект пользователя в реквест, потом можно будет достать
+            req.user = user; // Сохраняем объект пользователя в реквест, потом можно будет достать  
             // Проверим уровень доступа, что хоть какая-то роль пользователя обладает уровнем доступа выше необходимого
             return user.roles.some(role => role.value >= roleVal);
         } catch (e) {

@@ -1,12 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards, UsePipes } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards, UsePipes } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MinRoleValueGuard } from 'src/auth/min-roles.guard';
 import { MinRoleValue } from 'src/auth/roles-auth.decorator';
 import { ValidationPipe } from 'src/pipes/validation.pipe';
+import { ValidationPipe as NestValPipe } from '@nestjs/common';
 import { UserMaxPermission } from 'src/users/users.decorator';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { DeleteRoleDto } from './dto/delete-role.dto';
+import { UpdateRoleParamDto } from './dto/update-role-param.dto';
 import { RolesService } from './roles.service';
+import { UpdateRoleDto } from './dto/update-role.dto';
 
 @ApiTags('Роли')
 @Controller('roles')
@@ -52,5 +55,17 @@ export class RolesController {
     ) {
         console.log(`got user permission in delete: ${JSON.stringify(userPerm)}`);
         return this.roleService.deleteByName(dto, userPerm);
+    }
+
+
+    @UsePipes(ValidationPipe)
+    @MinRoleValue(10)
+    @UseGuards(MinRoleValueGuard)
+    @Put('/:name')
+    updateRole(@Param(new ValidationPipe()) {name: name}: UpdateRoleParamDto,
+               @Body() updateDto: UpdateRoleDto,
+               @UserMaxPermission() userPerm: number
+    ) {
+        return this.roleService.updateByName(name, updateDto, userPerm);
     }
 }
