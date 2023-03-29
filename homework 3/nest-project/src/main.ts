@@ -11,7 +11,6 @@ async function start() {
         .setTitle('Проект на NestJS')
         .setDescription('Документация REST API')
         .setVersion('1.0.0')
-        .addTag('1B')
         .build();
     
     const document = SwaggerModule.createDocument(app, config);

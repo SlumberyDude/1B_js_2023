@@ -16,12 +16,19 @@ export class UsersService {
     // Для того, чтобы работать с сервисом из другого модуля импортируем модуль в файле модулей
     constructor(
         @InjectModel(User) private userRepository: typeof User,
-                           private roleService: RolesService ) {}
+                           private roleService: RolesService) {}
 
     async createUser(dto: CreateUserDto) {
+        const role = await this.roleService.getRoleByName('USER');
+
+        if (role === null) { throw new HttpException(
+            "Роль 'USER' не найдена, необходимо выполнение инициализации ресурса",
+            HttpStatus.NOT_FOUND
+        )}
+
         const user = await this.userRepository.create(dto);
-        const role = await this.roleService.getRoleByValue('USER');
         await user.$set('roles', [role.id]); // $set позволяет изменить объект и сразу обновить его в базе
+
         user.roles = [role];
         return user;
     }
@@ -37,7 +44,7 @@ export class UsersService {
     }
 
     async addRole(dto: AddRoleDto) {
-        const role = await this.roleService.getRoleByValue(dto.value);
+        const role = await this.roleService.getRoleByName(dto.roleName);
         const user = await this.userRepository.findByPk(dto.userId);
 
         if (role && user) {

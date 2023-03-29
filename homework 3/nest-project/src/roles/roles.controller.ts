@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { RolesService } from './roles.service';
 
+@ApiTags('Роли')
 @Controller('roles')
 export class RolesController {
     // В контроллер внедряем зависимость сервиса. Декораторы не используются (почему ?)
@@ -21,10 +23,10 @@ export class RolesController {
     // Через декораторы помечаем метод, как запрос с методом GET
     // Параметр пути в декораторе содержит плейсхолдер для значения
     // Для отлова значения в пути необходим декоратор @Param
-    @Get('/:value')
-    getByValue(
-        @Param('value') value: string
+    @Get('/:name')
+    getByName(
+        @Param('name') name: string
     ) {
-        return this.roleService.getRoleByValue(value);
+        return this.roleService.getRoleByName(name);
     }
 }

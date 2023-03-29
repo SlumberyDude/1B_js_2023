@@ -40,7 +40,7 @@ export class RolesGuard implements CanActivate {
             const user = this.jwtService.verify<User>(token);
             req.user = user;
             // Теперь ищем, есть ли у пользователя необходимая роль
-            return user.roles.some(role => requiredRoles.includes(role.value));
+            return user.roles.some(role => requiredRoles.includes(role.name));
         } catch (e) {
             throw badRoleError;
         }
