@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AuthModule } from 'src/auth/auth.module';
 import { User } from 'src/users/users.model';
+import { UsersModule } from 'src/users/users.module';
 import { ProfilesController } from './profiles.controller';
 import { Profile } from './profiles.model';
 import { ProfilesService } from './profiles.service';
@@ -13,7 +14,8 @@ import { ProfilesService } from './profiles.service';
     imports: [
         SequelizeModule.forFeature([User, Profile]),
         AuthModule,
-        JwtModule // Уже был зарегистрирован в модуле авторизации, используется для расшифровки токена
+        JwtModule, // Уже был зарегистрирован в модуле авторизации, используется для расшифровки токена
+        UsersModule,
     ],
     exports: [
         ProfilesService

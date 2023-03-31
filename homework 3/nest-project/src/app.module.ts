@@ -13,6 +13,7 @@ import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ProfilesModule } from './profiles/profiles.module';
 import { InitModule } from './init/init.module';
+import { TextBlockModule } from './text-block/text-block.module';
 import * as path from 'path';
 
 @Module({
@@ -40,6 +41,7 @@ import * as path from 'path';
         AuthModule,
         ProfilesModule,
         InitModule,
+        TextBlockModule,
         // PostsModule,
         // FilesModule,
     ],

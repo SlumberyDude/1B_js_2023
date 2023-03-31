@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Model, Table, Column, DataType, BelongsToMany, HasMany, ForeignKey } from 'sequelize-typescript';
+import { Model, Table, Column, DataType, BelongsToMany, HasMany, ForeignKey, HasOne, BelongsTo } from 'sequelize-typescript';
 import { User } from 'src/users/users.model';
 
 // Так как эндпоинт регистрации находится в профиле и профиль и пользователь
@@ -16,10 +16,12 @@ export class Profile extends Model<Profile, ProfileCreationAttrs> {
     @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
     id: number;
 
-    @Column({ type: DataType.STRING, allowNull: true})
+    @ApiProperty({ example: 'Ubivashka666', description: 'Имя пользователя' })
+    @Column({ type: DataType.STRING, allowNull: true })
     username: string;
 
-    @Column({ type: DataType.STRING, allowNull: true})
+    @ApiProperty({ example: 'http://ubivashka666.vk.com', description: 'Ссылка на социальную сеть' })
+    @Column({ type: DataType.STRING, allowNull: true })
     social: string;
 
     @ApiProperty({ example: '3', description: 'Уникальный идентификатор пользователя' })
@@ -30,6 +32,6 @@ export class Profile extends Model<Profile, ProfileCreationAttrs> {
     // @BelongsToMany( () => Role, () => UserRoles)
     // roles: Role[];
 
-    // @HasMany(() => Post)
-    // posts: Post[];
+    @BelongsTo(() => User)
+    user: User;
 }

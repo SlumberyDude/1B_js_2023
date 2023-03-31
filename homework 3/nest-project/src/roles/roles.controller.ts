@@ -1,15 +1,15 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards, UsePipes } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { MinRoleValueGuard } from 'src/auth/min-roles.guard';
-import { MinRoleValue } from 'src/auth/roles-auth.decorator';
 import { ValidationPipe } from 'src/pipes/validation.pipe';
-import { ValidationPipe as NestValPipe } from '@nestjs/common';
 import { UserMaxPermission } from 'src/users/users.decorator';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { DeleteRoleDto } from './dto/delete-role.dto';
 import { UpdateRoleParamDto } from './dto/update-role-param.dto';
 import { RolesService } from './roles.service';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { initRoles } from 'src/init/init.roles';
+import { RoleAccess } from 'src/auth/roles.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
 
 @ApiTags('Роли')
 @Controller('roles')
@@ -22,11 +22,14 @@ export class RolesController {
     // Также параметром метода является тело определенного вида, что выражается в
     // наличии декоратора и определенного типа объекта данных
     @UsePipes(ValidationPipe)
+    @RoleAccess(initRoles['ADMIN'].value)
+    @UseGuards(RolesGuard)
     @Post()
     create(
-        @Body() dto: CreateRoleDto
+        @Body() dto: CreateRoleDto,
+        @UserMaxPermission() userPerm: number
     ) {
-        return this.roleService.createRole(dto);
+        return this.roleService.createRole(dto, userPerm);
     }
 
     // Через декораторы помечаем метод, как запрос с методом GET
@@ -47,20 +50,19 @@ export class RolesController {
     }
 
     @UsePipes(ValidationPipe)
-    @MinRoleValue(10)
-    @UseGuards(MinRoleValueGuard)
+    @RoleAccess(initRoles['ADMIN'].value)
+    @UseGuards(RolesGuard)
     @Delete()
     deleteByName(@Body() dto: DeleteRoleDto,
                  @UserMaxPermission() userPerm: number
     ) {
-        console.log(`got user permission in delete: ${JSON.stringify(userPerm)}`);
         return this.roleService.deleteByName(dto, userPerm);
     }
 
 
     @UsePipes(ValidationPipe)
-    @MinRoleValue(10)
-    @UseGuards(MinRoleValueGuard)
+    @RoleAccess(initRoles['ADMIN'].value)
+    @UseGuards(RolesGuard)
     @Put('/:name')
     updateRole(@Param(new ValidationPipe()) {name: name}: UpdateRoleParamDto,
                @Body() updateDto: UpdateRoleDto,

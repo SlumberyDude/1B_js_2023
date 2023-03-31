@@ -13,7 +13,11 @@ export class RolesService {
     // После инъекции зависимости можно обращаться к репозиторию через this
     constructor(@InjectModel(Role) private roleRepository: typeof Role) {}
 
-    async createRole(dto: CreateRoleDto) {
+    async createRole(dto: CreateRoleDto, userPerm: number = Infinity) {
+        if (userPerm <= dto.value) {
+            throw new HttpException('Можно создать роль только с меньшими чем у Вас правами', HttpStatus.FORBIDDEN);
+        }
+
         try {
             const role = await this.roleRepository.create(dto);
             return role;

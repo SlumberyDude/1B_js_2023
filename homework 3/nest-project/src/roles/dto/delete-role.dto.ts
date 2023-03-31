@@ -1,9 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotIn, IsString } from "class-validator";
+import { initRoles } from "src/init/init.roles";
 
 export class DeleteRoleDto {
-    @ApiProperty({ example: 'SMALLADMIN', description: 'Имя роли для удаления' })
+    @ApiProperty({ example: 'SMALLADMIN', description: 'Имя роли' })
     @IsString({message: 'Должно быть строкой'})
-    @IsNotIn(['OWNER', 'ADMIN', 'USER'], {message: 'Базовые роли не могут быть удалены'})
+    @IsNotIn(Object.values(initRoles).map( role => role.name), {message: 'Попытка операции над базовой ролью'})
     readonly name: string;
 }

@@ -1,9 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Role } from 'src/roles/roles.model';
 import { RolesService } from 'src/roles/roles.service';
 import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto, UnbanUserDto } from './dto/ban-user.dto';
 import { CreateUserDto } from './dto/create.user.dto';
+import { UpdateUserDto } from './dto/update.user.dto';
 import { User } from './users.model';
 
 @Injectable()
@@ -43,6 +45,27 @@ export class UsersService {
         return user;
     }
 
+    async updateUserByEmail(email: string, dto: UpdateUserDto) {
+        const user = await this.userRepository.findOne({where: {email}});
+
+        if (!user) {
+            throw new HttpException(`Пользователя с email ${email} не существует`, HttpStatus.NOT_FOUND);
+        }
+
+        await user.update(dto);
+        return user;
+    }
+
+    async deleteUserByEmail(email: string) {
+        const user = await this.userRepository.findOne({where: {email}});
+
+        if (!user) {
+            throw new HttpException(`Пользователя с email ${email} не существует`, HttpStatus.NOT_FOUND);
+        }
+
+        await user.destroy();
+    }
+
     async addRole(dto: AddRoleDto) {
         const role = await this.roleService.getRoleByName(dto.roleName);
         const user = await this.userRepository.findByPk(dto.userId);
@@ -55,26 +78,26 @@ export class UsersService {
         throw new HttpException('Пользователь или роль не найдены', HttpStatus.NOT_FOUND);
     }
 
-    async banUser(dto: BanUserDto) {
-        const user = await this.userRepository.findByPk(dto.userId);
-        if (!user) {
-            return new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
-        }
-        user.banned = true;
-        user.banReason = dto.banReason;
-        await user.save();
-        return user;
-    }
+    // async banUser(dto: BanUserDto) {
+    //     const user = await this.userRepository.findByPk(dto.userId);
+    //     if (!user) {
+    //         return new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
+    //     }
+    //     user.banned = true;
+    //     user.banReason = dto.banReason;
+    //     await user.save();
+    //     return user;
+    // }
 
-    async unbanUser(dto: UnbanUserDto) {
-        const user = await this.userRepository.findByPk(dto.userId);
-        if (!user) {
-            return new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
-        }
-        user.banned = false;
-        user.banReason = null;
-        await user.save();
-        return user;
-    }
+    // async unbanUser(dto: UnbanUserDto) {
+    //     const user = await this.userRepository.findByPk(dto.userId);
+    //     if (!user) {
+    //         return new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
+    //     }
+    //     user.banned = false;
+    //     user.banReason = null;
+    //     await user.save();
+    //     return user;
+    // }
 
 }
