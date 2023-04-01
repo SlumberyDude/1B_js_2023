@@ -8,7 +8,7 @@ import { ValidationException } from "src/exceptions/validation.exception";
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
     async transform(value: any, metadata: ArgumentMetadata): Promise<any> {
-        console.log(`got value ${JSON.stringify(value)} in transform`);
+        console.log(`Validation object: ${JSON.stringify(value)} in ValidationPipe`);
 
         if (value === undefined) {
             return value;
@@ -16,13 +16,9 @@ export class ValidationPipe implements PipeTransform<any> {
         }
 
         const obj = plainToClass(metadata.metatype, value); // Получаем объект, который будем валидировать
-        console.log(`Получили объект ${obj}`);
         const errors = await validate(obj);
-        console.log(`Получили ошибки для него ${errors}`);
 
         if (errors.length) {
-            console.log("Ошибки")
-            console.log(errors);
             let messages = errors.map(err => {
                 return `${err.property} - ${Object.values(err.constraints).join(', ')}`;
             })

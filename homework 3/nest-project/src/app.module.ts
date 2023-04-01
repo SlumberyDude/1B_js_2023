@@ -7,13 +7,11 @@ import { RolesModule } from './roles/roles.module';
 import { Role } from './roles/roles.model';
 import { UserRoles } from './roles/user-roles.model';
 import { AuthModule } from './auth/auth.module';
-import { PostsModule } from './posts/posts.module';
-import { Post } from './posts/posts.model';
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ProfilesModule } from './profiles/profiles.module';
 import { InitModule } from './init/init.module';
-import { TextBlockModule } from './text-block/text-block.module';
+// import { TextBlocksModule } from './text-blocks/text-blocks.module';
 import * as path from 'path';
 
 @Module({
@@ -30,7 +28,7 @@ import * as path from 'path';
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [User, Role, UserRoles, Post],
+            models: [User, Role, UserRoles],
             autoLoadModels: true
         }),
         ServeStaticModule.forRoot({
@@ -41,9 +39,9 @@ import * as path from 'path';
         AuthModule,
         ProfilesModule,
         InitModule,
-        TextBlockModule,
+        // TextBlocksModule,
         // PostsModule,
-        // FilesModule,
+        FilesModule,
     ],
 })
 export class AppModule {
