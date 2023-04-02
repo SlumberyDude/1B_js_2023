@@ -15,6 +15,7 @@ async function start() {
     
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('/api/docs', app, document);
+    app.setGlobalPrefix('/api');
     
     // app.useGlobalGuards(JwtAuthGuard) // установит гвард для всего приложения
     // app.useGlobalPipes(new ValidationPipe());

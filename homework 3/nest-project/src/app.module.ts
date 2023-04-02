@@ -11,7 +11,7 @@ import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ProfilesModule } from './profiles/profiles.module';
 import { InitModule } from './init/init.module';
-// import { TextBlocksModule } from './text-blocks/text-blocks.module';
+import { TextBlocksModule } from './text-blocks/text-blocks.module';
 import * as path from 'path';
 
 @Module({
@@ -31,16 +31,15 @@ import * as path from 'path';
             models: [User, Role, UserRoles],
             autoLoadModels: true
         }),
-        ServeStaticModule.forRoot({
-            rootPath: path.join(__dirname, 'static')
-        }),
+        // ServeStaticModule.forRoot({
+        //     rootPath: path.join(__dirname, 'static')
+        // }),
         UsersModule,
         RolesModule,
         AuthModule,
         ProfilesModule,
         InitModule,
-        // TextBlocksModule,
-        // PostsModule,
+        TextBlocksModule,
         FilesModule,
     ],
 })

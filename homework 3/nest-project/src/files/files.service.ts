@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as uuid from 'uuid';
 import { InjectModel } from '@nestjs/sequelize';
-import { Files, FileStorageType } from './files.model';
+import { File, FileStorageType } from './files.model';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { Op } from 'sequelize';
@@ -11,9 +11,7 @@ import { Op } from 'sequelize';
 @Injectable()
 export class FilesService {
 
-    constructor(@InjectModel(Files) private filesRepository: typeof Files) {
-        // this.storedir = path.resolve(__dirname, '..', 'static');
-    }
+    constructor(@InjectModel(File) private filesRepository: typeof File) {}
 
     // Создает файл и сохраняет его в зависимости от выбранного способа хранения
     async createFile(dto: CreateFileDto, file: Express.Multer.File) {
@@ -38,14 +36,15 @@ export class FilesService {
                 ...dataParams,
             });
 
-            return this.fileOutputView(newFile);
+            // return this.fileOutputView(newFile);
+            return newFile.id;
             
         } catch {
             throw new HttpException('Ошибка при создании файла', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    async getFileById(id: number) : Promise<Files> {
+    async getFileById(id: number) : Promise<File> {
         const file = await this.filesRepository.findByPk(id);
         if (file === undefined) {
             throw new HttpException('Файла с таким id не существует', HttpStatus.NOT_FOUND);
@@ -160,13 +159,11 @@ export class FilesService {
         return {'message': `Удалено файлов: ${files.length}`};
     }
 
-
-
     // HELPERS 
     // TODO: перевести операции с FS на асинхронные рельсыs
     
     // Преобразует файл из БД в более удобную для вывода пользователю форму (чтобы не выводил весь буфер данных)
-    private fileOutputView(file: Files) {
+    private fileOutputView(file: File) {
         const res = { 
             id: file.id,
             storageType: file.storageType,

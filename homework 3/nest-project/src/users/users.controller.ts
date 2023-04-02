@@ -68,21 +68,4 @@ export class UsersController {
         return this.usersService.addRole(roleDto);
     }
 
-    // @ApiOperation({ summary: 'Бан пользователя' })
-    // @ApiResponse({ status: 200 })
-    // @MinRoleValue(initRoles['ADMIN'].value)
-    // @UseGuards(MinRoleValueGuard)
-    // @Post('/ban')
-    // banUser(@Body() banUserDto: BanUserDto) {
-    //     return this.usersService.banUser(banUserDto);
-    // }
-
-    // @ApiOperation({ summary: 'Разбан пользователя' })
-    // @ApiResponse({ status: 200 })
-    // @MinRoleValue(initRoles['ADMIN'].value)
-    // @UseGuards(MinRoleValueGuard)
-    // @Post('/unban')
-    // unbanUser(@Body() unbanUserDto: UnbanUserDto) {
-    //     return this.usersService.unbanUser(unbanUserDto);
-    // }
 }

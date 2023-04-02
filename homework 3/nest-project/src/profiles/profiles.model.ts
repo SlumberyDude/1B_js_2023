@@ -29,9 +29,6 @@ export class Profile extends Model<Profile, ProfileCreationAttrs> {
     @Column({ type: DataType.INTEGER, unique: true, allowNull: false })
     user_id: number;
 
-    // @BelongsToMany( () => Role, () => UserRoles)
-    // roles: Role[];
-
     @BelongsTo(() => User)
     user: User;
 }

@@ -16,7 +16,7 @@ interface FilesCreationAttrs {
 }
 
 @Table({ tableName: 'files' })
-export class Files extends Model<Files, FilesCreationAttrs> {
+export class File extends Model<File, FilesCreationAttrs> {
 
     @ApiProperty({ example: '1', description: 'Уникальный идентификатор файла' })
     @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })

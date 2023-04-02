@@ -1,14 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Model, Table, Column, DataType } from 'sequelize-typescript';
+import { Model, Table, Column, DataType, ForeignKey, HasOne, BelongsTo } from 'sequelize-typescript';
+import { File } from 'src/files/files.model';
 
 interface TextBlocksCreationAttrs {
+    searchName: string;
     name: string;
-    value: number;
-    description: string;
+    text: string;
+    group: string;
+    image_id: number;
 }
 
 @Table({ tableName: 'text-blocks' })
-export class TextBlocks extends Model<TextBlocks, TextBlocksCreationAttrs> {
+export class TextBlock extends Model<TextBlock, TextBlocksCreationAttrs> {
 
     @ApiProperty({ example: '1', description: 'Уникальный идентификатор текстового блока' })
     @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
@@ -29,4 +32,12 @@ export class TextBlocks extends Model<TextBlocks, TextBlocksCreationAttrs> {
     @ApiProperty({ example: 'main-page', description: 'Группа к которой относится блок' })
     @Column({ type: DataType.STRING, allowNull: true })
     group: string;
+
+    @ApiProperty({ example: '7', description: 'Уникальный идентификатор файла изображения' })
+    @ForeignKey(() => File)
+    @Column({ type: DataType.INTEGER })
+    image_id: number;
+
+    @BelongsTo(() => File, 'image_id')
+    image: File;
 }

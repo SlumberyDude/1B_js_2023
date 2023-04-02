@@ -4,7 +4,6 @@ import { CreateProfileDto, RegisterProfileDto } from './dto/create-profile.dto';
 import { Profile } from './profiles.model';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from 'src/users/dto/create.user.dto';
 import { UsersService } from 'src/users/users.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 
