@@ -66,7 +66,7 @@ export class ProfilesController {
     }
 
     @ApiOperation({ summary: 'Удаление профиля по email' })
-    @ApiResponse({ status: 200 })
+    @ApiResponse({ status: 204 })
     @RoleAccess({minRoleVal: initRoles.ADMIN.value, allowSelf: true})
     @UseGuards(RolesGuard)
     @Delete('/:email')

@@ -10,13 +10,13 @@ interface FilesCreationAttrs {
     storageType: FileStorageType;
     essenceTable: string;
     essenceId: number;
-    data: Uint8Array;
+    data: Buffer;
     originalName: string;
     filename: string;
 }
 
 @Table({ tableName: 'files' })
-export class Files extends Model<File, FilesCreationAttrs> {
+export class Files extends Model<Files, FilesCreationAttrs> {
 
     @ApiProperty({ example: '1', description: 'Уникальный идентификатор файла' })
     @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
@@ -39,7 +39,7 @@ export class Files extends Model<File, FilesCreationAttrs> {
 
     @ApiProperty({ description: 'Файл сохраненный в базе в бинарном виде, если type = DBSTORE' })   
     @Column({ type: DataType.BLOB, allowNull: true })
-    data: Uint8Array;
+    data: Buffer;
 
     @ApiProperty({ example: 'smiling_cat.jpg', description: 'Имя файла, сохраненного в файловой системе, если type = FSSTORE' })   
     @Column({ type: DataType.STRING, allowNull: true })
