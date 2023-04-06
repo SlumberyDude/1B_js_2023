@@ -1,8 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { CreateFileDto } from 'src/files/dto/create-file.dto';
-import { File, FileStorageType } from 'src/files/files.model';
-import { FilesService } from 'src/files/files.service';
+import { File, FileStorageType } from '../files/files.model';
+import { FilesService } from '../files/files.service';
 import { CreateTextBlockDto } from './dto/create-textblock.dto';
 import { UpdateTextBlockDto } from './dto/update-textblock.dto';
 import { TextBlock } from './text-blocks.model';

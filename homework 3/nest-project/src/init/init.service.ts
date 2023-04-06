@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ProfilesService } from 'src/profiles/profiles.service';
-import { RolesService } from 'src/roles/roles.service';
-import { UsersService } from 'src/users/users.service';
+import { ProfilesService } from '../profiles/profiles.service';
+import { RolesService } from '../roles/roles.service';
+import { UsersService } from '../users/users.service';
 import { InitDto } from './dto/init.dto';
 import { initRoles } from './init.roles';
 

@@ -1,5 +1,5 @@
 import { IntersectionType, OmitType } from "@nestjs/swagger";
-import { CreateUserDto } from "src/users/dto/create.user.dto";
+import { CreateUserDto } from "../../users/dto/create.user.dto";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsInt, IsOptional, IsString, IsUrl } from "class-validator";
 

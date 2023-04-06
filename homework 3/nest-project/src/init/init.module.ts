@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { ProfilesModule } from 'src/profiles/profiles.module';
-import { RolesModule } from 'src/roles/roles.module';
-import { UsersModule } from 'src/users/users.module';
+import { ProfilesModule } from '../profiles/profiles.module';
+import { RolesModule } from '../roles/roles.module';
+import { UsersModule } from '../users/users.module';
 import { InitController } from './init.controller';
 import { InitService } from './init.service';
 

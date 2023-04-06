@@ -1,13 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, UsePipes } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ValidationPipe } from 'src/pipes/validation.pipe';
+import { ValidationPipe } from '../pipes/validation.pipe';
 import { AddRoleDto } from './dto/add-role.dto';
 import { User } from './users.model';
 import { UsersService } from './users.service';
-import { initRoles } from 'src/init/init.roles';
+import { initRoles } from '../init/init.roles';
 import { UpdateUserDto } from './dto/update.user.dto';
-import { RoleAccess } from 'src/auth/roles.decorator';
-import { RolesGuard } from 'src/auth/roles.guard';
+import { RoleAccess } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 import { EmailUserParamDto } from './dto/email.user.param.dto';
 
 @UsePipes(ValidationPipe)

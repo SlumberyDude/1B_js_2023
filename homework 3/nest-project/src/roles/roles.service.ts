@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { User } from 'src/users/users.model';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { DeleteRoleDto } from './dto/delete-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';

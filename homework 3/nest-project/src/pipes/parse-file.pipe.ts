@@ -1,5 +1,5 @@
 import { ArgumentMetadata, Injectable, PipeTransform } from "@nestjs/common";
-import { ValidationException } from "src/exceptions/validation.exception";
+import { ValidationException } from "../exceptions/validation.exception";
 
 @Injectable()
 export class ParseFile implements PipeTransform {

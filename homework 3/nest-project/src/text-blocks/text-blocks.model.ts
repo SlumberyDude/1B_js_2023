@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Model, Table, Column, DataType, ForeignKey, HasOne, BelongsTo } from 'sequelize-typescript';
-import { File } from 'src/files/files.model';
+import { File } from '../files/files.model';
 
 interface TextBlocksCreationAttrs {
     searchName: string;

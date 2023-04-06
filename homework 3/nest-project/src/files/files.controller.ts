@@ -1,11 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors, UsePipes } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { RoleAccess } from 'src/auth/roles.decorator';
-import { RolesGuard } from 'src/auth/roles.guard';
-import { initRoles } from 'src/init/init.roles';
-import { ParseFile } from 'src/pipes/parse-file.pipe';
-import { ValidationPipe } from 'src/pipes/validation.pipe';
+import { RoleAccess } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
+import { initRoles } from '../init/init.roles';
+import { ParseFile } from '../pipes/parse-file.pipe';
+import { ValidationPipe } from '../pipes/validation.pipe';
 import { CreateFileDto } from './dto/create-file.dto';
 import { FileIdParamDto } from './dto/file-id.param.dto';
 import { UpdateFileDto } from './dto/update-file.dto';

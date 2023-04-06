@@ -1,18 +1,19 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { RolesController } from './roles.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Role } from './roles.model';
-import { User } from 'src/users/users.model';
+import { User } from '../users/users.model';
 import { UserRoles } from './user-roles.model';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 
 @Module({
     providers: [RolesService],
     controllers: [RolesController],
     imports: [
         SequelizeModule.forFeature([Role, User, UserRoles]),
-        AuthModule
+        forwardRef( () => AuthModule )
     ],
     exports: [
         RolesService // Добавляем, чтобы иметь возможность импортировать сервис в другой модуль, в данном случае - в модуль Users

@@ -1,16 +1,15 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, UsePipes } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ValidationPipe } from 'src/pipes/validation.pipe';
-import { User } from 'src/users/users.model';
+import { ValidationPipe } from '../pipes/validation.pipe';
 import { CreateProfileDto, RegisterProfileDto } from './dto/create-profile.dto';
 import { ProfilesService } from './profiles.service';
-import { AuthTokenDto } from 'src/auth/dto/auth.token.dto';
+import { AuthTokenDto } from '../auth/dto/auth.token.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Profile } from './profiles.model';
-import { RoleAccess } from 'src/auth/roles.decorator';
-import { initRoles } from 'src/init/init.roles';
-import { RolesGuard } from 'src/auth/roles.guard';
-import { EmailUserParamDto } from 'src/users/dto/email.user.param.dto';
+import { RoleAccess } from '../auth/roles.decorator';
+import { initRoles } from '../init/init.roles';
+import { RolesGuard } from '../auth/roles.guard';
+import { EmailUserParamDto } from '../users/dto/email.user.param.dto';
 import { UsernameProfileParamDto } from './dto/username-profile.param.dto';
 
 

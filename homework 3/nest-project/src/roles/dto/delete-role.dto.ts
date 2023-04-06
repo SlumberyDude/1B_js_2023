@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotIn, IsString } from "class-validator";
-import { initRoles } from "src/init/init.roles";
+import { initRoles } from "../../init/init.roles";
 
 export class DeleteRoleDto {
     @ApiProperty({ example: 'SMALLADMIN', description: 'Имя роли' })

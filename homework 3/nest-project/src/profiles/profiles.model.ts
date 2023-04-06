@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Model, Table, Column, DataType, BelongsToMany, HasMany, ForeignKey, HasOne, BelongsTo } from 'sequelize-typescript';
-import { User } from 'src/users/users.model';
+import { User } from '../users/users.model';
 
 // Так как эндпоинт регистрации находится в профиле и профиль и пользователь
 // связаны, как 1 к 1, то при создании сущности Profile также необходимо создавать данные User.

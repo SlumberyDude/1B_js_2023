@@ -1,4 +1,4 @@
-import { CreateRoleDto } from "src/roles/dto/create-role.dto";
+import { CreateRoleDto } from "../roles/dto/create-role.dto";
 
 type BaseRole = 'USER' | 'ADMIN' | 'OWNER';
 

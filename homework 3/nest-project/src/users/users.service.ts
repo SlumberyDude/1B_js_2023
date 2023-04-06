@@ -1,9 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Role } from 'src/roles/roles.model';
-import { RolesService } from 'src/roles/roles.service';
+import { RolesService } from '../roles/roles.service';
 import { AddRoleDto } from './dto/add-role.dto';
-import { BanUserDto, UnbanUserDto } from './dto/ban-user.dto';
 import { CreateUserDto } from './dto/create.user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { User } from './users.model';
@@ -25,7 +23,7 @@ export class UsersService {
 
         if (role === null) { throw new HttpException(
             "Роль 'USER' не найдена, необходимо выполнение инициализации ресурса",
-            HttpStatus.NOT_FOUND
+            HttpStatus.I_AM_A_TEAPOT
         )}
 
         const user = await this.userRepository.create(dto);

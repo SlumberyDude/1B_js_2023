@@ -2,9 +2,9 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateProfileDto, RegisterProfileDto } from './dto/create-profile.dto';
 import { Profile } from './profiles.model';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()

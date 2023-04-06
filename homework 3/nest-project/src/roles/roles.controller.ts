@@ -1,15 +1,15 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards, UsePipes } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { ValidationPipe } from 'src/pipes/validation.pipe';
-import { UserMaxPermission } from 'src/users/users.decorator';
+import { ValidationPipe } from '../pipes/validation.pipe';
+import { UserMaxPermission } from '../users/users.decorator';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { DeleteRoleDto } from './dto/delete-role.dto';
 import { UpdateRoleParamDto } from './dto/update-role-param.dto';
 import { RolesService } from './roles.service';
 import { UpdateRoleDto } from './dto/update-role.dto';
-import { initRoles } from 'src/init/init.roles';
-import { RoleAccess } from 'src/auth/roles.decorator';
-import { RolesGuard } from 'src/auth/roles.guard';
+import { initRoles } from '../init/init.roles';
+import { RoleAccess } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('Роли')
 @Controller('roles')
