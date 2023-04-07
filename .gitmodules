@@ -1,3 +1,0 @@
-[submodule "nestjs-tests"]
-	path = nestjs-tests
-	url = https://github.com/SleepyDude/nestjs-tests
